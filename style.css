@@ -1,0 +1,226 @@
+:root {
+  --bg: #070711;
+  --text: #f7f7fb;
+  --muted: #c8cbe0;
+  --green: #14f195;
+  --purple: #9945ff;
+  --blue: #00d4ff;
+  --border: rgba(255, 255, 255, 0.22);
+  --surface: rgba(7, 7, 17, 0.42);
+  --surface-strong: rgba(7, 7, 17, 0.58);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  color: var(--text);
+  background: var(--bg);
+}
+
+.page {
+  min-height: 100vh;
+  padding: 0;
+}
+
+.hero {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow: hidden;
+  text-align: center;
+  isolation: isolate;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("./asset/background.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  opacity: 1;
+  z-index: -2;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  z-index: -1;
+}
+
+.hero-content {
+  width: min(620px, calc(100% - 40px));
+  margin-top: clamp(500px, 70vh, 720px);
+  padding: 0 0 48px;
+}
+
+.eyebrow {
+  margin: 4px 0 6px;
+  color: var(--green);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.65);
+}
+
+.subtitle {
+  max-width: 300px;
+  margin: 0 auto;
+  color: var(--muted);
+  font-size: clamp(0.98rem, 0.8vw, 1.18rem);
+  line-height: 1.2;
+  text-shadow: 0 3px 18px rgba(0, 0, 0, 0.75);
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 16px;
+  padding: 10px 20px;
+  border: 1px solid rgba(20, 241, 149, 0.3);
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--green), var(--blue));
+  color: #07110f;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  box-shadow: 0 18px 60px rgba(20, 241, 149, 0.18);
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(3rem, 7vw, 5rem);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  text-shadow: 0 4px 28px rgba(0, 0, 0, 0.75);
+}
+
+.links {
+  position: absolute;
+  top: 28px;
+  right: 32px;
+  z-index: 5;
+
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 0;
+  flex-wrap: wrap;
+}
+
+.links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-width: auto;
+  padding: 11px 16px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 700;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    background 160ms ease;
+}
+
+.links a:hover {
+  transform: translateY(-2px);
+  border-color: rgba(20, 241, 149, 0.52);
+  background: var(--surface-strong);
+}
+
+.icon {
+  display: inline-flex;
+  width: 18px;
+  height: 18px;
+  color: var(--green);
+  flex: 0 0 auto;
+}
+
+.icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+@media (max-width: 900px) {
+  .hero-content {
+    margin-top: clamp(430px, 62vh, 620px);
+  }
+}
+
+@media (max-width: 560px) {
+  .hero::before {
+    background-position: center top;
+    background-size: cover;
+  }
+
+  .hero-content {
+    width: calc(100% - 28px);
+    margin-top: 58vh;
+    padding-bottom: 36px;
+  }
+
+  .eyebrow {
+    font-size: 0.68rem;
+  }
+
+  h1 {
+    font-size: clamp(2.8rem, 16vw, 4rem);
+  }
+
+  .subtitle {
+    font-size: 0.95rem;
+  }
+
+  .links {
+    top: 18px;
+    right: 14px;
+    left: 14px;
+    justify-content: center;
+    flex-direction: row;
+  }
+
+  .links a {
+    width: auto;
+    flex: 1;
+    padding: 10px 12px;
+    font-size: 0.82rem;
+  }
+
+  .icon {
+    width: 16px;
+    height: 16px;
+  }
+}
