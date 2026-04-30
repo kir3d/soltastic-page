@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Soltastic — Architecture</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:           #0d1117;
+      --bg-secondary: #161b22;
+      --bg-tertiary:  #21262d;
+      --border:       #30363d;
+      --border-active:#58a6ff;
+      --text:         #e6edf3;
+      --text-secondary:#8b949e;
+      --text-tertiary: #484f58;
+      --green:        #1D9E75;
+      --blue:         #4A90D9;
+      --purple:       #9945FF;
+      --solana-green: #14F195;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px 60px;
+    }
+
+    header {
+      width: 100%;
+      max-width: 880px;
+      margin-bottom: 32px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .logo-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--solana-green);
+      box-shadow: 0 0 8px var(--solana-green);
+    }
+
+    h1 {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+      color: var(--text);
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-left: 22px;
+    }
+
+    .card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 24px 20px;
+      width: 100%;
+      max-width: 880px;
+    }
+
+    .card-title {
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-tertiary);
+      margin-bottom: 20px;
+    }
+
+    /* ── SVG DIAGRAM ── */
+    svg {
+      width: 100%;
+      height: auto;
+      display: block;
+      cursor: pointer;
+    }
+
+    /* ── STEP TABLE ── */
+    .steps {
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .step-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 9px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: background 0.18s, border-color 0.18s;
+      font-size: 13px;
+      color: var(--text-secondary);
+      user-select: none;
+    }
+
+    .step-row:hover { background: var(--bg-tertiary); }
+
+    .step-row.active {
+      background: var(--bg-tertiary);
+      border-color: var(--border-active);
+      color: var(--text);
+    }
+
+    .step-num {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-tertiary);
+      min-width: 22px;
+    }
+
+    .step-row.active .step-num { color: var(--text-secondary); }
+
+    footer {
+      margin-top: 40px;
+      font-size: 12px;
+      color: var(--text-tertiary);
+    }
+
+    footer a { color: var(--text-secondary); text-decoration: none; }
+    footer a:hover { color: var(--text); }
+
+    @keyframes ring-once {
+      0%   { r: 14; opacity: 0.85; stroke-width: 2.5; }
+      100% { r: 44; opacity: 0;    stroke-width: 0.5; }
+    }
+    .ring-once { fill: none; animation: ring-once 1.8s ease-out 1 forwards; }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; opacity: 1 !important; }
+    }
+
+    @media (max-width: 600px) {
+      .step-row { font-size: 12px; }
+      h1 { font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-dot"></div>
+    <h1>Soltastic</h1>
+  </div>
+  <p class="subtitle">Solana transactions over Meshtastic — architecture overview</p>
+</header>
+
+<div class="card">
+  <div class="card-title">Protocol flow · click diagram or a step to advance</div>
+
+  <!--
+    BT gaps = 92px, LoRa = 72px, Internet = 72px
+
+    Client:  x=14,  right=114, cx=64
+    Node 1:  x=206, right=278, cx=242   BT1 gap=92
+    Node 2:  x=350, right=422, cx=386   LoRa gap=72
+    Server:  x=514, right=614, cx=564   BT2 gap=92
+    RPC:     x=686, right=816, cx=751   Internet gap=72
+
+    Track midpoints:
+      BT1=(114+206)/2=160  LoRa=(278+350)/2=314
+      BT2=(422+514)/2=468  Internet=(614+686)/2=650
+  -->
+  <svg id="mainSvg" viewBox="0 0 840 210" role="img" xmlns="http://www.w3.org/2000/svg">
+    <title>Soltastic protocol architecture</title>
+
+    <!-- TRACKS -->
+    <line x1="114" y1="100" x2="206" y2="100" stroke="#4A90D9" stroke-width="1" stroke-dasharray="4 3" opacity="0.3"/>
+    <line x1="278" y1="100" x2="350" y2="100" stroke="#1D9E75" stroke-width="1" stroke-dasharray="5 4" opacity="0.3"/>
+    <line x1="422" y1="100" x2="514" y2="100" stroke="#4A90D9" stroke-width="1" stroke-dasharray="4 3" opacity="0.3"/>
+    <line x1="614" y1="100" x2="686" y2="100" stroke="#9945FF" stroke-width="1" stroke-dasharray="4 3" opacity="0.3"/>
+
+    <!-- PROTOCOL LABELS -->
+    <text x="160" y="82" text-anchor="middle" font-size="10" font-family="-apple-system,sans-serif" fill="#4A90D9">Bluetooth LE</text>
+    <text x="314" y="82" text-anchor="middle" font-size="10" font-family="-apple-system,sans-serif" fill="#1D9E75">LoRa</text>
+    <text x="468" y="82" text-anchor="middle" font-size="10" font-family="-apple-system,sans-serif" fill="#4A90D9">Bluetooth LE</text>
+    <text x="650" y="82" text-anchor="middle" font-size="10" font-family="-apple-system,sans-serif" fill="#9945FF">Internet</text>
+
+    <!-- CLIENT  cx=64 -->
+    <rect x="14"  y="66" width="100" height="68" rx="5" fill="none" stroke="#8b949e" stroke-width="1.2"/>
+    <rect x="18"  y="70" width="92"  height="60" rx="3" fill="#161b22"/>
+    <rect x="23"  y="76"  width="52" height="3.5" rx="1" fill="#484f58" opacity="0.8"/>
+    <rect x="23"  y="84"  width="38" height="3.5" rx="1" fill="#484f58" opacity="0.6"/>
+    <rect x="23"  y="92"  width="60" height="3.5" rx="1" fill="#484f58" opacity="0.7"/>
+    <rect x="23"  y="100" width="30" height="3.5" rx="1" fill="#1D9E75" opacity="0.9"/>
+    <path d="M6 136 L122 136 L116 144 L12 144 Z" fill="none" stroke="#8b949e" stroke-width="1.2"/>
+    <text x="64" y="165" text-anchor="middle" font-size="13" font-weight="500" font-family="-apple-system,sans-serif" fill="#e6edf3">Client</text>
+
+    <!-- NODE 1  cx=242 -->
+    <rect x="206" y="62" width="72" height="88" rx="8" fill="none" stroke="#e6edf3" stroke-width="1.2"/>
+    <rect x="210" y="66" width="64" height="80" rx="5" fill="#161b22"/>
+    <line x1="242" y1="62" x2="242" y2="44" stroke="#e6edf3" stroke-width="1.5" stroke-linecap="round"/>
+    <circle cx="242" cy="42" r="3.5" fill="#e6edf3"/>
+    <rect x="216" y="72" width="52" height="28" rx="3" fill="#21262d"/>
+    <rect x="221" y="78" width="32" height="3" rx="1" fill="#484f58" opacity="0.8"/>
+    <rect x="221" y="86" width="22" height="3" rx="1" fill="#1D9E75" opacity="0.9"/>
+    <circle cx="226" cy="128" r="5" fill="none" stroke="#8b949e" stroke-width="1"/>
+    <circle cx="242" cy="128" r="5" fill="none" stroke="#8b949e" stroke-width="1"/>
+    <circle cx="258" cy="128" r="5" fill="none" stroke="#8b949e" stroke-width="1"/>
+    <text x="242" y="165" text-anchor="middle" font-size="13" font-weight="500" font-family="-apple-system,sans-serif" fill="#e6edf3">Node 1</text>
+
+    <!-- NODE 2  cx=386 -->
+    <rect x="350" y="62" width="72" height="88" rx="8" fill="none" stroke="#e6edf3" stroke-width="1.2"/>
+    <rect x="354" y="66" width="64" height="80" rx="5" fill="#161b22"/>
+    <line x1="386" y1="62" x2="386" y2="44" stroke="#e6edf3" stroke-width="1.5" stroke-linecap="round"/>
+    <circle cx="386" cy="42" r="3.5" fill="#e6edf3"/>
+    <rect x="360" y="72" width="52" height="28" rx="3" fill="#21262d"/>
+    <rect x="365" y="78" width="32" height="3" rx="1" fill="#484f58" opacity="0.8"/>
+    <rect x="365" y="86" width="22" height="3" rx="1" fill="#1D9E75" opacity="0.9"/>
+    <circle cx="370" cy="128" r="5" fill="none" stroke="#8b949e" stroke-width="1"/>
+    <circle cx="386" cy="128" r="5" fill="none" stroke="#8b949e" stroke-width="1"/>
+    <circle cx="402" cy="128" r="5" fill="none" stroke="#8b949e" stroke-width="1"/>
+    <text x="386" y="165" text-anchor="middle" font-size="13" font-weight="500" font-family="-apple-system,sans-serif" fill="#e6edf3">Node 2</text>
+
+    <!-- SERVER  cx=564 -->
+    <rect x="514" y="66" width="100" height="68" rx="5" fill="none" stroke="#8b949e" stroke-width="1.2"/>
+    <rect x="518" y="70" width="92"  height="60" rx="3" fill="#161b22"/>
+    <rect x="523" y="76"  width="52" height="3.5" rx="1" fill="#484f58" opacity="0.8"/>
+    <rect x="523" y="84"  width="38" height="3.5" rx="1" fill="#484f58" opacity="0.6"/>
+    <rect x="523" y="92"  width="60" height="3.5" rx="1" fill="#484f58" opacity="0.7"/>
+    <rect x="523" y="100" width="30" height="3.5" rx="1" fill="#1D9E75" opacity="0.9"/>
+    <path d="M506 136 L622 136 L616 144 L512 144 Z" fill="none" stroke="#8b949e" stroke-width="1.2"/>
+    <text x="564" y="165" text-anchor="middle" font-size="13" font-weight="500" font-family="-apple-system,sans-serif" fill="#e6edf3">Server</text>
+
+    <!-- RPC SOLANA  cx=751 -->
+    <rect x="686" y="60" width="130" height="90" rx="8" fill="none" stroke="#9945FF" stroke-width="1.4"/>
+    <rect x="690" y="64" width="122" height="82" rx="5" fill="#161b22"/>
+    <rect x="698" y="72"  width="106" height="14" rx="3" fill="#21262d"/>
+    <rect x="698" y="90"  width="106" height="14" rx="3" fill="#21262d"/>
+    <rect x="698" y="108" width="106" height="14" rx="3" fill="#21262d"/>
+    <circle cx="706" cy="79"  r="3" fill="#9945FF" opacity="0.9"/>
+    <circle cx="706" cy="97"  r="3" fill="#9945FF" opacity="0.7"/>
+    <circle cx="706" cy="115" r="3" fill="#14F195" opacity="0.85"/>
+    <rect x="714" y="76"  width="82" height="3" rx="1" fill="#484f58" opacity="0.6"/>
+    <rect x="714" y="94"  width="66" height="3" rx="1" fill="#484f58" opacity="0.4"/>
+    <rect x="714" y="112" width="74" height="3" rx="1" fill="#14F195" opacity="0.5"/>
+    <rect x="698" y="128" width="106" height="6" rx="2" fill="none" stroke="#9945FF" stroke-width="0.8" opacity="0.5"/>
+    <text x="751" y="165" text-anchor="middle" font-size="13" font-weight="500" font-family="-apple-system,sans-serif" fill="#e6edf3">RPC Solana</text>
+
+    <g id="ringLayer"></g>
+    <g id="pktLayer"></g>
+  </svg>
+
+  <!-- STEP TABLE -->
+  <div class="steps" id="stepTable">
+    <div class="step-row active" onclick="onRowClick(0)">
+      <span class="step-num">01</span>
+      <span>💻 The client sends an "init" request</span>
+    </div>
+    <div class="step-row" onclick="onRowClick(1)">
+      <span class="step-num">02</span>
+      <span>🖥️ The server sends "balance + durable nonce"</span>
+    </div>
+    <div class="step-row" onclick="onRowClick(2)">
+      <span class="step-num">03</span>
+      <span>🔐 The client sends "metadata + signature"</span>
+    </div>
+    <div class="step-row" onclick="onRowClick(3)">
+      <span class="step-num">04</span>
+      <span>🚀 The server assembles the transaction and sends an RPC to the node</span>
+    </div>
+    <div class="step-row" onclick="onRowClick(4)">
+      <span class="step-num">05</span>
+      <span>✅ The server sends the transaction hash to the client</span>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <a href="https://github.com/kir3d/soltastic" target="_blank">github.com/kir3d/soltastic</a>
+</footer>
+
+<script>
+const NS  = "http://www.w3.org/2000/svg";
+const Y_T = 100;
+
+const CX   = { A:64,  n1:242, n2:386, B:564, sol:751 };
+const HALF = { A:50,  n1:36,  n2:36,  B:50,  sol:65  };
+
+const STEPS = [
+  {
+    pulseNodes:[{id:"A",color:"#4A90D9"}],
+    chain:[
+      {label:["init"],            color:"#4A90D9", from:"A",  to:"n1"},
+      {label:["init"],            color:"#1D9E75", from:"n1", to:"n2"},
+      {label:["init"],            color:"#4A90D9", from:"n2", to:"B"}
+    ]
+  },
+  {
+    pulseNodes:[{id:"B",color:"#4A90D9"}],
+    chain:[
+      {label:["balance","nonce"], color:"#4A90D9", from:"B",  to:"n2"},
+      {label:["balance","nonce"], color:"#1D9E75", from:"n2", to:"n1"},
+      {label:["balance","nonce"], color:"#4A90D9", from:"n1", to:"A"}
+    ]
+  },
+  {
+    pulseNodes:[{id:"A",color:"#4A90D9"}],
+    chain:[
+      {label:["metadata","sig"],  color:"#4A90D9", from:"A",  to:"n1"},
+      {label:["metadata","sig"],  color:"#1D9E75", from:"n1", to:"n2"},
+      {label:["metadata","sig"],  color:"#4A90D9", from:"n2", to:"B"}
+    ]
+  },
+  {
+    pulseNodes:[{id:"B",color:"#9945FF"},{id:"sol",color:"#9945FF"}],
+    chain:[
+      {label:["tx"],              color:"#9945FF", from:"B",  to:"sol"}
+    ]
+  },
+  {
+    pulseNodes:[{id:"B",color:"#14F195"}],
+    chain:[
+      {label:["tx","hash"],       color:"#14F195", from:"B",  to:"n2"},
+      {label:["tx","hash"],       color:"#1D9E75", from:"n2", to:"n1"},
+      {label:["tx","hash"],       color:"#14F195", from:"n1", to:"A"}
+    ]
+  }
+];
+
+let curStep=0, rafH=[], chainT=null, autoT=null;
+
+function stopAll(){
+  rafH.forEach(h=>cancelAnimationFrame(h)); rafH=[];
+  if(chainT){clearTimeout(chainT);chainT=null;}
+  document.getElementById("pktLayer").innerHTML="";
+  document.getElementById("ringLayer").innerHTML="";
+}
+
+function updateTable(s){
+  document.querySelectorAll(".step-row").forEach((r,i)=>r.classList.toggle("active",i===s));
+}
+
+function spawnRing(cx,cy,color){
+  const c=document.createElementNS(NS,"circle");
+  c.setAttribute("cx",cx); c.setAttribute("cy",cy);
+  c.setAttribute("r","14"); c.setAttribute("fill","none");
+  c.setAttribute("stroke",color); c.setAttribute("stroke-width","2.5");
+  c.setAttribute("opacity","0"); c.setAttribute("class","ring-once");
+  document.getElementById("ringLayer").appendChild(c);
+  setTimeout(()=>c&&c.remove(),2000);
+}
+
+function lerpC(a,b,t){
+  const ah=parseInt(a.slice(1),16),bh=parseInt(b.slice(1),16);
+  const ar=(ah>>16)&255,ag=(ah>>8)&255,ab=ah&255;
+  const br=(bh>>16)&255,bg=(bh>>8)&255,bb=bh&255;
+  return `#${((1<<24)|(Math.round(ar+(br-ar)*t)<<16)|(Math.round(ag+(bg-ag)*t)<<8)|Math.round(ab+(bb-ab)*t)).toString(16).slice(1)}`;
+}
+
+function runPkt(label,fromColor,toColor,fromKey,toKey,onDone){
+  const fx=CX[fromKey],tx=CX[toKey];
+  const fh=HALF[fromKey],th=HALF[toKey];
+  const startX=fx+(tx>fx?fh:-fh), endX=tx+(tx>fx?-th:th);
+  const two=label.length>1;
+  const maxL=Math.max(...label.map(l=>l.length));
+  const pw=Math.max(36,maxL*6.8+14), ph=two?24:14;
+
+  const g=document.createElementNS(NS,"g"); g.setAttribute("opacity","0");
+  const rect=document.createElementNS(NS,"rect");
+  rect.setAttribute("width",pw); rect.setAttribute("height",ph);
+  rect.setAttribute("x",-pw/2); rect.setAttribute("y",-ph/2);
+  rect.setAttribute("rx","3"); rect.setAttribute("fill",fromColor);
+  g.appendChild(rect);
+
+  label.forEach((txt,i)=>{
+    const t=document.createElementNS(NS,"text");
+    t.setAttribute("text-anchor","middle"); t.setAttribute("dominant-baseline","middle");
+    t.setAttribute("font-size","8"); t.setAttribute("font-family","monospace");
+    t.setAttribute("fill","white"); t.setAttribute("x","0");
+    t.setAttribute("y",two?(i===0?-5:6):"1");
+    t.textContent=txt; g.appendChild(t);
+  });
+
+  document.getElementById("pktLayer").appendChild(g);
+  const dur=1100; let sTs=null;
+
+  function frame(ts){
+    if(!sTs)sTs=ts;
+    const elapsed=ts-sTs, t=Math.min(elapsed/dur,1);
+    const ease=t<0.5?2*t*t:-1+(4-2*t)*t;
+    const x=startX+(endX-startX)*ease;
+    let op; if(t<0.06)op=t/0.06; else if(t<0.82)op=1; else op=1-(t-0.82)/0.18;
+    op=Math.max(0,op);
+    const mid=(startX+endX)/2;
+    rect.setAttribute("fill",lerpC(fromColor,toColor,Math.max(0,Math.min(1,(x-(mid-30))/60))));
+    g.setAttribute("transform",`translate(${x},${Y_T})`);
+    g.setAttribute("opacity",op);
+    if(t<1){ rafH.push(requestAnimationFrame(frame)); }
+    else{ g.remove(); if(onDone)onDone(); }
+  }
+  rafH.push(requestAnimationFrame(frame));
+}
+
+function runChain(chain,idx){
+  if(idx>=chain.length)return;
+  const p=chain[idx];
+  const toColor=idx+1<chain.length?chain[idx+1].color:p.color;
+  runPkt(p.label,p.color,toColor,p.from,p.to,()=>{
+    spawnRing(CX[p.to],Y_T,toColor);
+    chainT=setTimeout(()=>runChain(chain,idx+1),500);
+  });
+}
+
+function stepDuration(s){
+  return 350 + STEPS[s].chain.length*(1100+500) + 1000;
+}
+
+function showStep(s){
+  stopAll(); curStep=s; updateTable(s);
+  const S=STEPS[s];
+  S.pulseNodes.forEach(n=>spawnRing(CX[n.id],Y_T,n.color));
+  chainT=setTimeout(()=>runChain(S.chain,0),350);
+}
+
+function startAuto(){
+  clearInterval(autoT);
+  autoT=setInterval(()=>{
+    curStep=(curStep+1)%STEPS.length;
+    showStep(curStep);
+    clearInterval(autoT);
+    startAuto();
+  }, stepDuration(curStep));
+}
+
+function onRowClick(s){
+  clearInterval(autoT);
+  showStep(s);
+  startAuto();
+}
+
+document.getElementById("mainSvg").addEventListener("click",()=>{
+  clearInterval(autoT);
+  curStep=(curStep+1)%STEPS.length;
+  showStep(curStep);
+  startAuto();
+});
+
+showStep(0);
+startAuto();
+</script>
+</body>
+</html>
