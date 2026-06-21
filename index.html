@@ -1,116 +1,299 @@
-<!DOCTYPE html>
+﻿<!doctype html>
 <html lang="en">
-<head>
-  <link rel="icon" type="image/png" href="/favicon.png" />
-  <link rel="apple-touch-icon" href="/favicon.png" />
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>Soltastic — Coming Soon</title>
-  <meta
-    name="description"
-    content="Soltastic — Solana over Meshtastic. Coming soon."
-  />
-
-  <link rel="stylesheet" href="style.css" />
-
-  <style>
-    .hero {
-      position: relative;
-    }
-
-    .social-links {
-      position: absolute;
-      top: clamp(16px, 3vw, 32px);
-      right: clamp(16px, 3vw, 32px);
-      z-index: 20;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .social-links a {
-      width: 38px;
-      height: 38px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      color: #39ff88;
-      border: 1px solid rgba(57, 255, 136, 0.35);
-      border-radius: 999px;
-      background: rgba(3, 12, 10, 0.38);
-      backdrop-filter: blur(8px);
-      transition: transform 0.18s ease, color 0.18s ease, border-color 0.18s ease, background 0.18s ease;
-    }
-
-    .social-links a:hover,
-    .social-links a:focus-visible {
-      color: #7dffb2;
-      border-color: rgba(125, 255, 178, 0.8);
-      background: rgba(57, 255, 136, 0.12);
-      transform: translateY(-2px);
-      outline: none;
-    }
-
-    .social-links svg {
-      width: 21px;
-      height: 21px;
-      display: block;
-    }
-  </style>
-</head>
-<body>
-  <main class="page">
-    <section class="hero">
-      <div class="hero-overlay"></div>
-
-      <nav class="social-links" aria-label="Soltastic links">
-        <a
-          href="https://github.com/kir3d/soltastic/"
-          target="_blank"
-          rel="noopener"
-          aria-label="GitHub"
-        >
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M12 2C6.477 2 2 6.589 2 12.248c0 4.527 2.865 8.368 6.839 9.724.5.095.682-.221.682-.494 0-.244-.009-.89-.014-1.747-2.782.617-3.369-1.37-3.369-1.37-.455-1.183-1.11-1.498-1.11-1.498-.908-.637.069-.624.069-.624 1.004.072 1.532 1.055 1.532 1.055.892 1.566 2.341 1.114 2.91.852.091-.664.349-1.114.635-1.37-2.221-.258-4.556-1.139-4.556-5.069 0-1.119.389-2.034 1.029-2.751-.103-.259-.446-1.301.098-2.712 0 0 .84-.276 2.75 1.051A9.303 9.303 0 0 1 12 6.836c.85.004 1.706.117 2.504.344 1.909-1.327 2.748-1.051 2.748-1.051.546 1.411.202 2.453.1 2.712.641.717 1.028 1.632 1.028 2.751 0 3.94-2.339 4.808-4.566 5.061.359.319.678.948.678 1.911 0 1.38-.012 2.493-.012 2.832 0 .275.18.594.688.493C19.138 20.613 22 16.773 22 12.248 22 6.589 17.523 2 12 2Z"/>
-          </svg>
-        </a>
-
-        <a href="mailto:hello@soltastic.net" aria-label="Email">
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M3 5.5A2.5 2.5 0 0 1 5.5 3h13A2.5 2.5 0 0 1 21 5.5v13a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 18.5v-13Zm2.03-.5L12 10.19 18.97 5H5.03ZM19 6.248l-6.403 4.767a1 1 0 0 1-1.194 0L5 6.248V18.5a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5V6.248Z"/>
-          </svg>
-        </a>
-
-        <a
-          href="https://x.com/Soltastic26"
-          target="_blank"
-          rel="noopener"
-          aria-label="X"
-        >
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.657l-5.214-6.817-5.966 6.817H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231 5.45-6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z"/>
-          </svg>
-        </a>
-
-        <a
-          href="https://www.youtube.com/@Soltastic26"
-          target="_blank"
-          rel="noopener"
-          aria-label="YouTube"
-        >
-          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M23.498 6.186a2.99 2.99 0 0 0-2.105-2.117C19.536 3.568 12 3.568 12 3.568s-7.536 0-9.393.501A2.99 2.99 0 0 0 .502 6.186C0 8.055 0 11.955 0 11.955s0 3.9.502 5.769a2.99 2.99 0 0 0 2.105 2.117c1.857.501 9.393.501 9.393.501s7.536 0 9.393-.501a2.99 2.99 0 0 0 2.105-2.117C24 15.855 24 11.955 24 11.955s0-3.9-.502-5.769ZM9.546 15.5V8.41l6.273 3.545L9.546 15.5Z"/>
-          </svg>
-        </a>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Soltastic - Solana Transactions When Mobile Internet Is Down</title>
+    <meta
+      name="description"
+      content="Soltastic is a last-mile LoRa mesh communication layer for signed Solana transactions when mobile internet is unavailable."
+    />
+    <link rel="icon" href="assets/favicon.png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Soltastic home">
+        <img src="assets/icon.png" alt="" />
+        <span>Soltastic</span>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="#how">How it Works</a>
+        <a href="#features">Features</a>
+        <a href="#demo">Demo</a>
+        <a href="#roadmap">Roadmap</a>
       </nav>
-
-      <div class="hero-content">
-        <h1>Soltastic</h1>
-        <p class="eyebrow">Solana × Meshtastic</p>
-        <div class="status">Coming soon</div>
+      <div class="socials" aria-label="Social links">
+        <a href="https://github.com/kir3d/soltastic/" aria-label="GitHub" title="https://github.com/kir3d/soltastic/">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.2.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 .1.6 1.6 3.4 1.1.1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.6.1-3.2 0 0 1-.3 3.3 1.2a11.4 11.4 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.1c0 .4.2.7.8.6A12 12 0 0 0 12 .5Z" />
+          </svg>
+        </a>
+        <a href="https://x.com/Soltastic26" aria-label="X" title="https://x.com/Soltastic26">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M18.9 2h3.4l-7.5 8.6L23.6 22h-6.9l-5.4-7-6.2 7H1.7l8-9.2L1.2 2h7.1l4.9 6.5L18.9 2Zm-1.2 18h1.9L7.3 3.9h-2L17.7 20Z" />
+          </svg>
+        </a>
+        <a href="https://www.youtube.com/@Soltastic26" aria-label="YouTube" title="https://www.youtube.com/@Soltastic26">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.2 3.6-6.2 3.6Z" />
+          </svg>
+        </a>
+        <a href="#community" aria-label="Discord coming soon" title="Coming Soon">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20.3 4.4A16.8 16.8 0 0 0 16.2 3l-.5 1.1a15.5 15.5 0 0 0-7.4 0L7.8 3a16.8 16.8 0 0 0-4.1 1.4C1.1 8.3.4 12 .8 15.7a16.9 16.9 0 0 0 5 2.5l1.1-1.8c-.6-.2-1.1-.5-1.6-.8l.4-.3a12 12 0 0 0 12.6 0l.4.3c-.5.3-1 .6-1.6.8l1.1 1.8a16.9 16.9 0 0 0 5-2.5c.5-4.2-.7-7.8-2.9-11.3ZM8.2 13.5c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Zm7.6 0c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Z" />
+          </svg>
+        </a>
       </div>
-    </section>
-  </main>
-</body>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-bg" aria-hidden="true"></div>
+        <div class="hero-content">
+          <h1 id="hero-title">Solana transactions when mobile internet is down.</h1>
+          <p class="hero-copy">
+            A decentralized last-mile communication layer that moves signed Solana
+            transactions through local mesh networks and relays them to RPC nodes.
+          </p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#demo">Watch Demo</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="problem" class="section problem-section">
+        <div class="section-heading">
+          <p class="eyebrow">Problem</p>
+          <h2>Connectivity failures create direct financial losses.</h2>
+        </div>
+        <div class="split">
+          <div class="copy-block">
+            <p>
+              When internet access fails, users lose the ability to move value,
+              accept payments, execute transactions, or react to urgent financial
+              events.
+            </p>
+            <p>
+              Sky Business research reports that UK SMEs affected by running out
+              of mobile data lose over <strong>£3,400 per year on average</strong>,
+              with <strong>56%</strong> reporting lost sales, bookings, or
+              opportunities.
+            </p>
+            <a class="text-link" href="https://skygroup.sky/article/fear-of-running-out-of-mobile-data-foro-is-a-real-issue-for-uk-businesses-as-companies-lose-over-3-400-a-year">
+              Sky Group research
+            </a>
+          </div>
+          <div class="signal-card">
+            <span class="status-dot"></span>
+            <h3>No signal should not mean no transaction.</h3>
+            <p>
+              Remote areas, disaster zones, fieldwork, festivals, outages, and
+              censorship-resistant environments all need a way to broadcast value
+              without relying on mobile internet.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="how" class="section how-section">
+        <div class="section-heading">
+          <p class="eyebrow">Solution / How it Works</p>
+          <h2>Signed locally. Carried by mesh. Broadcast through a relay.</h2>
+        </div>
+        <div class="architecture-card">
+          <img src="assets/architecture.svg" alt="Soltastic architecture flow" />
+        </div>
+      </section>
+
+      <section id="demo" class="section demo-section">
+        <div class="section-heading">
+          <p class="eyebrow">Demo / App</p>
+          <h2>Real mesh devices moving transaction payloads.</h2>
+        </div>
+        <div class="demo-grid">
+          <a
+            class="video-frame"
+            href="https://youtu.be/Yei7QZdw6R4?si=2QHg11IXE9HkkNas"
+            target="_blank"
+            rel="noopener"
+            aria-label="Open Soltastic demo video on YouTube"
+          >
+            <img
+              src="https://img.youtube.com/vi/Yei7QZdw6R4/maxresdefault.jpg"
+              alt="Soltastic demo video preview"
+            />
+            <span class="play-button" aria-hidden="true"></span>
+          </a>
+          <div class="demo-panel">
+            <h3>From wallet to Meshtastic to Solana</h3>
+            <p>
+              The demo shows the basic version: init request, balance request,
+              Durable Nonce creation, SOL transaction metadata and signatures,
+              relay reconstruction, RPC broadcast, and hash confirmation.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section id="features" class="section features-section">
+        <div class="section-heading">
+          <p class="eyebrow">Features</p>
+          <h2>Built for offline-first transaction delivery.</h2>
+        </div>
+        <div class="cards">
+          <article>
+            <h3>Privacy first</h3>
+            <p>The server never receives private keys. All signing happens on the client.</p>
+          </article>
+          <article>
+            <h3>Deferred execution</h3>
+            <p>Durable Nonces let transactions live beyond the short blockhash window.</p>
+          </article>
+          <article>
+            <h3>Double-spend protection</h3>
+            <p>Advanced Nonce values change after use, preventing replayed spending.</p>
+          </article>
+          <article>
+            <h3>Local mesh delivery</h3>
+            <p>LoRa-based nodes provide the last-mile path when mobile data is absent.</p>
+          </article>
+          <article>
+            <h3>Wallet compatible</h3>
+            <p>Solana wallets can sign client-side without delegating assets to relayers.</p>
+          </article>
+          <article>
+            <h3>Relay architecture</h3>
+            <p>A server listens on the mesh channel and communicates with Solana RPC.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="stack" class="section stack-section">
+        <div class="section-heading">
+          <p class="eyebrow">Tech Stack / Powered by</p>
+          <h2>Purpose-built pieces, loosely coupled.</h2>
+        </div>
+        <div class="stack-list" aria-label="Technology stack">
+          <article class="stack-item">
+            <svg viewBox="0 0 48 48" aria-hidden="true">
+              <path d="M11 14h26l-5 5H6l5-5Zm5 8h26l-5 5H11l5-5Zm-5 8h26l-5 5H6l5-5Z" />
+            </svg>
+            <span>Solana</span>
+          </article>
+          <article class="stack-item">
+            <svg viewBox="0 0 48 48" aria-hidden="true">
+              <rect x="14" y="21" width="20" height="16" rx="3" />
+              <path d="M18 21v-5a6 6 0 0 1 12 0v5" />
+              <path d="M24 27v5" />
+            </svg>
+            <span>Durable Nonces</span>
+          </article>
+          <article class="stack-item">
+            <svg viewBox="0 0 48 48" aria-hidden="true">
+              <circle cx="24" cy="24" r="4" />
+              <circle cx="12" cy="15" r="3" />
+              <circle cx="36" cy="15" r="3" />
+              <circle cx="14" cy="34" r="3" />
+              <circle cx="34" cy="34" r="3" />
+              <path d="M15 17l6 5m12-5-6 5M17 33l5-6m9 0 2 5M15 34h18" />
+            </svg>
+            <span>Meshtastic</span>
+          </article>
+          <article class="stack-item">
+            <svg viewBox="0 0 48 48" aria-hidden="true">
+              <path d="M24 38V18" />
+              <path d="M17 25a10 10 0 0 1 14 0" />
+              <path d="M11 19a18 18 0 0 1 26 0" />
+              <path d="M6 13a26 26 0 0 1 36 0" />
+              <circle cx="24" cy="38" r="3" />
+            </svg>
+            <span>LoRa</span>
+          </article>
+          <article class="stack-item">
+            <svg viewBox="0 0 48 48" aria-hidden="true">
+              <rect x="7" y="14" width="34" height="20" rx="4" />
+              <path d="M14 24h6m4 0h10M17 34v5m14-5v5" />
+              <circle cx="17" cy="24" r="1.5" />
+            </svg>
+            <span>RPC Relay</span>
+          </article>
+          <article class="stack-item">
+            <svg viewBox="0 0 48 48" aria-hidden="true">
+              <path d="M24 6 38 12v11c0 9-5.8 15.3-14 19-8.2-3.7-14-10-14-19V12l14-6Z" />
+              <path d="m17 24 5 5 10-11" />
+            </svg>
+            <span>Client-side signing</span>
+          </article>
+        </div>
+      </section>
+
+      <section id="roadmap" class="section roadmap-section">
+        <div class="section-heading">
+          <p class="eyebrow">Roadmap</p>
+          <h2>From basic transfers to richer offline transaction types.</h2>
+        </div>
+        <ol class="timeline">
+          <li class="done">Basic version: init, balance, SOL transaction, RPC relay, tx hash.</li>
+          <li>Connect Meshtastic nodes via serial and Wi-Fi.</li>
+          <li>Support other tokens.</li>
+          <li>Support memos.</li>
+          <li>Support smart contract calls.</li>
+          <li>Smart contract for server reward distribution.</li>
+        </ol>
+      </section>
+
+      <section id="community" class="section community-section">
+        <div class="section-heading">
+          <p class="eyebrow">Community & Social Proof</p>
+          <h2>Follow the build and help shape the network.</h2>
+        </div>
+        <div class="community-actions icon-actions" aria-label="Community links">
+          <a class="icon-link" href="https://github.com/kir3d/soltastic/" aria-label="GitHub" title="https://github.com/kir3d/soltastic/">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 .5a12 12 0 0 0-3.8 23.4c.6.1.8-.2.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 .1.6 1.6 3.4 1.1.1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.6.1-3.2 0 0 1-.3 3.3 1.2a11.4 11.4 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.1c0 .4.2.7.8.6A12 12 0 0 0 12 .5Z" />
+            </svg>
+          </a>
+          <a class="icon-link" href="https://x.com/Soltastic26" aria-label="X" title="https://x.com/Soltastic26">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M18.9 2h3.4l-7.5 8.6L23.6 22h-6.9l-5.4-7-6.2 7H1.7l8-9.2L1.2 2h7.1l4.9 6.5L18.9 2Zm-1.2 18h1.9L7.3 3.9h-2L17.7 20Z" />
+            </svg>
+          </a>
+          <a class="icon-link" href="https://www.youtube.com/@Soltastic26" aria-label="YouTube" title="https://www.youtube.com/@Soltastic26">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.2 3.6-6.2 3.6Z" />
+            </svg>
+          </a>
+          <span class="icon-link disabled-link" aria-label="Discord coming soon" title="Coming Soon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20.3 4.4A16.8 16.8 0 0 0 16.2 3l-.5 1.1a15.5 15.5 0 0 0-7.4 0L7.8 3a16.8 16.8 0 0 0-4.1 1.4C1.1 8.3.4 12 .8 15.7a16.9 16.9 0 0 0 5 2.5l1.1-1.8c-.6-.2-1.1-.5-1.6-.8l.4-.3a12 12 0 0 0 12.6 0l.4.3c-.5.3-1 .6-1.6.8l1.1 1.8a16.9 16.9 0 0 0 5-2.5c.5-4.2-.7-7.8-2.9-11.3ZM8.2 13.5c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Zm7.6 0c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Z" />
+            </svg>
+          </span>
+          <a class="icon-link" href="mailto:hello@soltastic.net" aria-label="Email" title="mailto:hello@soltastic.net">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 5h18v14H3V5Zm2.3 2 6.7 5 6.7-5H5.3Zm13.7 10V9.5l-7 5.2-7-5.2V17h14Z" />
+            </svg>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <a class="brand" href="#top">
+        <img src="assets/icon.png" alt="" />
+        <span>Soltastic</span>
+      </a>
+      <nav aria-label="Footer navigation">
+        <a href="https://github.com/kir3d/soltastic/">GitHub</a>
+        <a href="#roadmap">Roadmap</a>
+        <a href="mailto:hello@soltastic.net">Contact</a>
+      </nav>
+      <p>Apache-2.0</p>
+    </footer>
+  </body>
 </html>
+
+
+
+
+
